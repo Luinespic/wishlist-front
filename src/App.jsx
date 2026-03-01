@@ -1,11 +1,74 @@
-function App() {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <h1 className="text-3xl font-bold text-green-700 p-8">
-        WishList App 🎁
-      </h1>
-    </div>
-  )
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { useAuth } from './hooks/useAuth'
+
+import LoginPage from './pages/auth/LoginPage'
+import RegisterPage from './pages/auth/RegisterPage'
+import DashboardPage from './pages/lists/DashboardPage'
+import ListDetailPage from './pages/lists/ListDetailPage'
+import PublicListPage from './pages/lists/PublicListPage'
+import ProfilePage from './pages/profile/ProfilePage'
+import NotFoundPage from './pages/NotFoundPage'
+
+// Componente que protege rutas privadas
+function PrivateRoute({ children }) {
+  const { user, loading } = useAuth()
+
+  if (loading) return <div>Cargando...</div>
+  if (!user) return <Navigate to="/login" replace />
+
+  return children
 }
 
-export default App
+// Componente que redirige a dashboard si ya estás logado
+function PublicOnlyRoute({ children }) {
+  const { user, loading } = useAuth()
+
+  if (loading) return <div>Cargando...</div>
+  if (user) return <Navigate to="/dashboard" replace />
+
+  return children
+}
+
+export default function App() {
+  return (
+    <Routes>
+      {/* Rutas públicas - solo accesibles sin estar logado */}
+      <Route path="/login" element={
+        <PublicOnlyRoute>
+          <LoginPage />
+        </PublicOnlyRoute>
+      } />
+      <Route path="/register" element={
+        <PublicOnlyRoute>
+          <RegisterPage />
+        </PublicOnlyRoute>
+      } />
+
+      {/* Ruta pública - accesible por cualquiera */}
+      <Route path="/lista/:token" element={<PublicListPage />} />
+
+      {/* Rutas privadas - solo accesibles estando logado */}
+      <Route path="/dashboard" element={
+        <PrivateRoute>
+          <DashboardPage />
+        </PrivateRoute>
+      } />
+      <Route path="/listas/:id" element={
+        <PrivateRoute>
+          <ListDetailPage />
+        </PrivateRoute>
+      } />
+      <Route path="/perfil" element={
+        <PrivateRoute>
+          <ProfilePage />
+        </PrivateRoute>
+      } />
+
+      {/* Redireccion raíz */}
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+      {/* 404 */}
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
+  )
+}
