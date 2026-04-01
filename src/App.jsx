@@ -13,6 +13,8 @@ import EditListPage from './pages/lists/EditListPage'
 import AddProductPage from './pages/lists/AddProductPage'
 import EditProductPage from './pages/lists/EditProductPage'
 import MyReservationsPage from './pages/lists/MyReservationsPage'
+import Navbar from './components/Navbar'
+
 
 
 // Componente que protege rutas privadas
@@ -37,6 +39,9 @@ function PublicOnlyRoute({ children }) {
 
 export default function App() {
   return (
+    <div>
+      <Navbar />
+      <main>
     <Routes>
       {/* Rutas públicas - solo accesibles sin estar logado */}
       <Route path="/login" element={
@@ -103,5 +108,7 @@ export default function App() {
       {/* 404 */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
+      </main>
+    </div>
   )
 }
