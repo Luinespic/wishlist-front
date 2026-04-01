@@ -90,6 +90,15 @@ export default function ListDetailPage() {
               <h3>{product.name}</h3>
               {product.description && <p>{product.description}</p>}
               <p>{product.status === 'available' ? 'Disponible' : 'Reservado'}</p>
+
+              {product.status === 'reserved' && !list.surprise_mode && (
+                <p>Reservado por: {product.reservation?.user?.name}</p>
+              )}
+
+              {product.status === 'reserved' && list.surprise_mode && (
+                <p>Reservado (modo sorpresa activo)</p>
+              )}
+
               <ul>
                 {product.links?.map(link => (
                   <li key={link.id}>

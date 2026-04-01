@@ -12,6 +12,8 @@ import CreateListPage from './pages/lists/CreateListPage'
 import EditListPage from './pages/lists/EditListPage'
 import AddProductPage from './pages/lists/AddProductPage'
 import EditProductPage from './pages/lists/EditProductPage'
+import MyReservationsPage from './pages/lists/MyReservationsPage'
+
 
 // Componente que protege rutas privadas
 function PrivateRoute({ children }) {
@@ -86,6 +88,12 @@ export default function App() {
       <Route path="/listas/:id/productos/:productId/editar" element={
         <PrivateRoute>
           <EditProductPage />
+        </PrivateRoute>
+      } />
+
+      <Route path="/mis-reservas" element={
+        <PrivateRoute>
+          <MyReservationsPage />
         </PrivateRoute>
       } />
 
