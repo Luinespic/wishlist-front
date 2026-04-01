@@ -8,6 +8,10 @@ import ListDetailPage from './pages/lists/ListDetailPage'
 import PublicListPage from './pages/lists/PublicListPage'
 import ProfilePage from './pages/profile/ProfilePage'
 import NotFoundPage from './pages/NotFoundPage'
+import CreateListPage from './pages/lists/CreateListPage'
+import EditListPage from './pages/lists/EditListPage'
+import AddProductPage from './pages/lists/AddProductPage'
+import EditProductPage from './pages/lists/EditProductPage'
 
 // Componente que protege rutas privadas
 function PrivateRoute({ children }) {
@@ -61,6 +65,27 @@ export default function App() {
       <Route path="/perfil" element={
         <PrivateRoute>
           <ProfilePage />
+        </PrivateRoute>
+      } />
+
+      <Route path="/listas/nueva" element={
+        <PrivateRoute>
+          <CreateListPage />
+        </PrivateRoute>
+      } />
+      <Route path="/listas/:id/editar" element={
+        <PrivateRoute>
+          <EditListPage />
+        </PrivateRoute>
+      } />
+      <Route path="/listas/:id/productos/nuevo" element={
+        <PrivateRoute>
+          <AddProductPage />
+        </PrivateRoute>
+      } />
+      <Route path="/listas/:id/productos/:productId/editar" element={
+        <PrivateRoute>
+          <EditProductPage />
         </PrivateRoute>
       } />
 
