@@ -2,31 +2,29 @@ import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { getListById, deleteList } from '../../api/lists'
 import { deleteProduct } from '../../api/products'
-//import { useAuth } from '../../hooks/useAuth'
 
 export default function ListDetailPage() {
   const { id } = useParams()
-  //const { user } = useAuth()
   const navigate = useNavigate()
 
   const [list, setList] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
- useEffect(() => {
-  const fetchList = async () => {
-    try {
-      const res = await getListById(id)
-      setList(res.data.list)
-    } catch {
-      setError('Error al cargar la lista')
-    } finally {
-      setLoading(false)
+  useEffect(() => {
+    const fetchList = async () => {
+      try {
+        const res = await getListById(id)
+        setList(res.data.list)
+      } catch {
+        setError('Error al cargar la lista')
+      } finally {
+        setLoading(false)
+      }
     }
-  }
 
-  fetchList()
-}, [id])
+    fetchList()
+  }, [id])
 
   const handleDeleteList = async () => {
     if (!window.confirm('¿Estás segura de que quieres eliminar esta lista?')) return
@@ -53,6 +51,12 @@ export default function ListDetailPage() {
     }
   }
 
+  const handleCopyLink = () => {
+    const url = `${window.location.origin}/lista/${list.share_token}`
+    navigator.clipboard.writeText(url)
+    alert('Enlace copiado al portapapeles')
+  }
+
   if (loading) return <div>Cargando...</div>
   if (error) return <div>{error}</div>
   if (!list) return <div>Lista no encontrada</div>
@@ -69,6 +73,7 @@ export default function ListDetailPage() {
       <p>{list.visibility === 'public' ? 'Pública' : 'Privada'}</p>
       {list.surprise_mode && <p>Modo sorpresa activado</p>}
 
+      <button onClick={handleCopyLink}>Copiar enlace público</button>
       <button onClick={handleDeleteList}>Eliminar lista</button>
       <Link to={`/listas/${id}/editar`}>Editar lista</Link>
       <Link to={`/listas/${id}/productos/nuevo`}>Añadir producto</Link>
