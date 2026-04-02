@@ -13,7 +13,7 @@ export default function Navbar() {
   return (
     <nav className="bg-white border-b border-border px-8 py-5">
         <div className="flex items-center justify-between">
-        <Link to="/dashboard" className="text-2xl font-bold text-primary">
+        <Link to="/" className="text-2xl font-bold text-primary">
           WishList 🎁
         </Link>
 

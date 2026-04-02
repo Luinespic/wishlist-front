@@ -13,6 +13,7 @@ import EditListPage from './pages/lists/EditListPage'
 import AddProductPage from './pages/lists/AddProductPage'
 import EditProductPage from './pages/lists/EditProductPage'
 import MyReservationsPage from './pages/lists/MyReservationsPage'
+import LandingPage from './pages/LandingPage'
 import Navbar from './components/Navbar'
 
 
@@ -103,7 +104,7 @@ export default function App() {
       } />
 
       {/* Redireccion raíz */}
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/" element={<LandingPage />} />
 
       {/* 404 */}
       <Route path="*" element={<NotFoundPage />} />
