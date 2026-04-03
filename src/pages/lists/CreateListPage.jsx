@@ -1,6 +1,9 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { createList } from '../../api/lists'
+import Card from '../../components/Card'
+import Button from '../../components/Button'
+import Input from '../../components/Input'
 
 export default function CreateListPage() {
   const [name, setName] = useState('')
@@ -35,65 +38,86 @@ export default function CreateListPage() {
   }
 
   return (
-    <div>
-      <h1>Crear nueva lista</h1>
+    <div className="max-w-2xl mx-auto px-8 py-12">
+      <div className="mb-8">
+        <Link to="/dashboard" className="text-sm text-text-secondary hover:text-text-primary transition-colors duration-200">
+          ← Volver al dashboard
+        </Link>
+        <h1 className="text-3xl font-bold text-text-primary mt-4">Nueva lista</h1>
+        <p className="text-text-secondary mt-1">Crea una lista de regalos y compártela con quien quieras.</p>
+      </div>
 
-      {error && <p>{error}</p>}
+      <Card>
+        {error && (
+          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-danger text-sm">
+            {error}
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nombre de la lista</label>
-          <input
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          <Input
+            label="Nombre de la lista"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder="Ej: Lista de Navidad 2026"
             required
           />
-        </div>
 
-        <div>
-          <label>Descripción (opcional)</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-text-primary">Descripción (opcional)</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Añade una descripción para tu lista..."
+              rows={3}
+              className="px-3 py-2 rounded-lg border border-border bg-white text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 resize-none"
+            />
+          </div>
 
-        <div>
-          <label>Fecha del evento (opcional)</label>
-          <input
+          <Input
+            label="Fecha del evento (opcional)"
             type="date"
             value={eventDate}
             onChange={(e) => setEventDate(e.target.value)}
           />
-        </div>
 
-        <div>
-          <label>Visibilidad</label>
-          <select
-            value={visibility}
-            onChange={(e) => setVisibility(e.target.value)}
-          >
-            <option value="public">Pública</option>
-            <option value="private">Privada</option>
-          </select>
-        </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-text-primary">Visibilidad</label>
+            <select
+              value={visibility}
+              onChange={(e) => setVisibility(e.target.value)}
+              className="px-3 py-2 rounded-lg border border-border bg-white text-text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+            >
+              <option value="public">🌍 Pública — cualquiera con el enlace puede verla</option>
+              <option value="private">🔒 Privada — solo tú puedes verla</option>
+            </select>
+          </div>
 
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              checked={surpriseMode}
-              onChange={(e) => setSurpriseMode(e.target.checked)}
-            />
-            Activar modo sorpresa
-          </label>
-        </div>
+          <div className="flex items-center justify-between p-4 rounded-lg border border-border bg-bg">
+            <div>
+              <p className="text-sm font-medium text-text-primary">🎭 Modo sorpresa</p>
+              <p className="text-xs text-text-secondary mt-0.5">Sabrás que un producto está reservado pero no quién lo va a comprar</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSurpriseMode(!surpriseMode)}
+              className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${surpriseMode ? 'bg-primary' : 'bg-border'}`}
+            >
+              <span className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${surpriseMode ? 'translate-x-7' : 'translate-x-1'}`} />
+            </button>
+          </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Creando...' : 'Crear lista'}
-        </button>
-      </form>
+          <div className="flex gap-3 pt-2">
+            <Button type="submit" disabled={loading} fullWidth>
+              {loading ? 'Creando...' : 'Crear lista'}
+            </Button>
+            <Button variant="secondary" onClick={() => navigate('/dashboard')} fullWidth>
+              Cancelar
+            </Button>
+          </div>
+        </form>
+      </Card>
     </div>
   )
 }

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { getMyReservations } from '../../api/reservations'
-import { cancelReservation } from '../../api/reservations'
+import { getMyReservations, cancelReservation } from '../../api/reservations'
+import Card from '../../components/Card'
+import Button from '../../components/Button'
 
 export default function MyReservationsPage() {
   const [reservations, setReservations] = useState([])
@@ -24,8 +25,7 @@ export default function MyReservationsPage() {
   }, [])
 
   const handleCancel = async (productId) => {
-    if (!window.confirm('¿Estás segura de que quieres cancelar esta reserva?')) return
-
+    if (!window.confirm('Estas segura de que quieres cancelar esta reserva?')) return
     try {
       await cancelReservation(productId)
       setReservations(reservations.filter(r => r.product_id !== productId))
@@ -34,50 +34,87 @@ export default function MyReservationsPage() {
     }
   }
 
-  if (loading) return <div>Cargando...</div>
-  if (error) return <div>{error}</div>
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <p className="text-text-secondary">Cargando...</p>
+    </div>
+  )
+
+  if (error) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <p className="text-danger">{error}</p>
+    </div>
+  )
 
   return (
-    <div>
-      <h1>Mis reservas</h1>
+    <div className="max-w-5xl mx-auto px-8 py-12">
+      <div className="mb-10">
+        <h1 className="text-3xl font-bold text-text-primary">Mis reservas</h1>
+        <p className="text-text-secondary mt-1">
+          {reservations.length === 0
+            ? 'No tienes ninguna reserva activa'
+            : `Tienes ${reservations.length} ${reservations.length === 1 ? 'reserva activa' : 'reservas activas'}`
+          }
+        </p>
+      </div>
 
       {reservations.length === 0 ? (
-        <p>No tienes ninguna reserva todavía.</p>
+        <Card className="text-center py-16">
+          <div className="text-4xl mb-4">🎁</div>
+          <h2 className="text-xl font-bold text-text-primary mb-2">No tienes reservas todavia</h2>
+          <p className="text-text-secondary mb-6">Visita la lista de alguien y reserva un regalo.</p>
+        </Card>
       ) : (
-        <ul>
+        <div className="flex flex-col gap-4">
           {reservations.map(reservation => (
-            <li key={reservation.id}>
-              {reservation.product.image_url && (
-                <img
-                  src={reservation.product.image_url}
-                  alt={reservation.product.name}
-                  width={80}
-                  loading="lazy"
-                />
-              )}
-              <h3>{reservation.product.name}</h3>
-              <p>
-                Lista: <Link to={`/lista/${reservation.product.list.share_token}`}>
-                  {reservation.product.list.name}
-                </Link>
-              </p>
-              <ul>
-                {reservation.product.links.map(link => (
-                  <li key={link.id}>
-                    <img src={link.favicon_url} alt={link.shop_name} width={16} />
-                    <a href={link.url} target="_blank" rel="noreferrer">
-                      {link.shop_name}
-                    </a>
-                    <span>{link.price}€</span>
-                  </li>
-                ))}
-              </ul>
-              <button onClick={() => handleCancel(reservation.product_id)}>
-                Cancelar reserva
-              </button>
-            </li>
+            <Card key={reservation.id}>
+              <div className="flex gap-6">
+                {reservation.product.image_url && (
+                  <img
+                    src={reservation.product.image_url}
+                    alt={reservation.product.name}
+                    className="w-24 h-24 object-cover rounded-lg border border-border flex-shrink-0"
+                    loading="lazy"
+                  />
+                )}
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-text-primary">{reservation.product.name}</h3>
+                  <p className="text-sm text-text-secondary mt-1">
+                    Lista:{' '}
+                    <Link
+                      to={`/lista/${reservation.product.list.share_token}`}
+                      className="text-primary hover:underline font-medium"
+                    >
+                      {reservation.product.list.name}
+                    </Link>
+                  </p>
+
+                  <div className="flex items-center gap-3 mt-3 flex-wrap">
+                    {reservation.product.links.map(link => (
+                      <a
+                        key={link.id}
+                        href={link.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border hover:border-primary hover:text-primary text-sm text-text-secondary transition-colors duration-200"
+                      >
+                        <img src={link.favicon_url} alt={link.shop_name} className="w-4 h-4" />
+                        {link.shop_name}
+                        <span className="font-medium">{link.price}€</span>
+                      </a>
+                    ))}
+                  </div>
+
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <Button variant="danger" onClick={() => handleCancel(reservation.product_id)}>
+                      Cancelar reserva
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Card>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   )

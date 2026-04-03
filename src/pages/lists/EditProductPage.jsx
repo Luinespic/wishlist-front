@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { getListById } from '../../api/lists'
 import { updateProduct } from '../../api/products'
+import Card from '../../components/Card'
+import Button from '../../components/Button'
+import Input from '../../components/Input'
 
 export default function EditProductPage() {
   const { id, productId } = useParams()
@@ -83,88 +86,131 @@ export default function EditProductPage() {
     }
   }
 
-  if (loading) return <div>Cargando...</div>
-  if (error) return <div>{error}</div>
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <p className="text-text-secondary">Cargando...</p>
+    </div>
+  )
 
   return (
-    <div>
-      <h1>Editar producto</h1>
+    <div className="max-w-2xl mx-auto px-8 py-12">
+      <div className="mb-8">
+        <Link to={`/listas/${id}`} className="text-sm text-text-secondary hover:text-text-primary transition-colors duration-200">
+          ← Volver a la lista
+        </Link>
+        <h1 className="text-3xl font-bold text-text-primary mt-4">Editar producto</h1>
+        <p className="text-text-secondary mt-1">Modifica los detalles del producto.</p>
+      </div>
 
-      {error && <p>{error}</p>}
+      <Card>
+        {error && (
+          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-danger text-sm">
+            {error}
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nombre del producto</label>
-          <input
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          <Input
+            label="Nombre del producto"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
-        </div>
 
-        <div>
-          <label>Descripción (opcional)</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-text-primary">Descripción (opcional)</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={2}
+              className="px-3 py-2 rounded-lg border border-border bg-white text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 resize-none"
+            />
+          </div>
 
-        <div>
-          <label>URL de imagen (opcional)</label>
-          <input
+          <Input
+            label="URL de imagen (opcional)"
             type="url"
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
+            placeholder="https://..."
           />
-        </div>
 
-        <div>
-          <h3>Enlaces de compra (mínimo 2, máximo 4)</h3>
-          {links.map((link, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                placeholder="Nombre de la tienda"
-                value={link.shop_name}
-                onChange={(e) => handleLinkChange(index, 'shop_name', e.target.value)}
-                required
-              />
-              <input
-                type="url"
-                placeholder="URL del producto"
-                value={link.url}
-                onChange={(e) => handleLinkChange(index, 'url', e.target.value)}
-                required
-              />
-              <input
-                type="number"
-                placeholder="Precio"
-                value={link.price}
-                onChange={(e) => handleLinkChange(index, 'price', e.target.value)}
-                step="0.01"
-                min="0"
-                required
-              />
-              {links.length > 2 && (
-                <button type="button" onClick={() => removeLink(index)}>
-                  Eliminar enlace
+          {imageUrl && (
+            <img
+              src={imageUrl}
+              alt="Preview"
+              className="w-32 h-32 object-cover rounded-lg border border-border"
+            />
+          )}
+
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-text-primary">
+                Enlaces de compra <span className="text-text-secondary font-normal">(mínimo 2, máximo 4)</span>
+              </label>
+              {links.length < 4 && (
+                <button
+                  type="button"
+                  onClick={addLink}
+                  className="text-sm text-primary font-medium hover:underline"
+                >
+                  + Añadir tienda
                 </button>
               )}
             </div>
-          ))}
-          {links.length < 4 && (
-            <button type="button" onClick={addLink}>
-              Añadir otro enlace
-            </button>
-          )}
-        </div>
 
-        <button type="submit" disabled={saving}>
-          {saving ? 'Guardando...' : 'Guardar cambios'}
-        </button>
-      </form>
+            {links.map((link, index) => (
+              <div key={index} className="p-4 rounded-lg border border-border bg-bg flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-text-secondary">Tienda {index + 1}</span>
+                  {links.length > 2 && (
+                    <button
+                      type="button"
+                      onClick={() => removeLink(index)}
+                      className="text-sm text-danger hover:underline"
+                    >
+                      Eliminar
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-1 gap-3">
+                  <Input
+                    type="text"
+                    placeholder="Nombre de la tienda"
+                    value={link.shop_name}
+                    onChange={(e) => handleLinkChange(index, 'shop_name', e.target.value)}
+                    required
+                  />
+                  <Input
+                    type="url"
+                    placeholder="URL del producto"
+                    value={link.url}
+                    onChange={(e) => handleLinkChange(index, 'url', e.target.value)}
+                    required
+                  />
+                  <Input
+                    type="number"
+                    placeholder="Precio"
+                    value={link.price}
+                    onChange={(e) => handleLinkChange(index, 'price', e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex gap-3 pt-2">
+            <Button type="submit" disabled={saving} fullWidth>
+              {saving ? 'Guardando...' : 'Guardar cambios'}
+            </Button>
+            <Button variant="secondary" onClick={() => navigate(`/listas/${id}`)} fullWidth>
+              Cancelar
+            </Button>
+          </div>
+        </form>
+      </Card>
     </div>
   )
 }
