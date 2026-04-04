@@ -114,6 +114,11 @@ export default function DashboardPage() {
                 <span className="text-xs font-medium px-2 py-1 rounded-full bg-primary-light text-primary">
                   {list._count.products} {list._count.products === 1 ? 'producto' : 'productos'}
                 </span>
+                {list.reservedCount > 0 && (
+                <span className="text-xs font-medium px-2 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">
+                  {list.reservedCount} reservado{list.reservedCount > 1 ? 's' : ''}
+                </span>
+                )}
                 <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg text-text-secondary border border-border">
                   {list.visibility === 'public' ? '🌍 Pública' : '🔒 Privada'}
                 </span>
