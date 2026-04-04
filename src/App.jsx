@@ -17,107 +17,41 @@ import LandingPage from './pages/LandingPage'
 import Navbar from './components/Navbar'
 import AdminPage from './pages/admin/AdminPage'
 
-
-
-// Componente que protege rutas privadas
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
-
   if (loading) return <div>Cargando...</div>
   if (!user) return <Navigate to="/login" replace />
-
   return children
 }
 
-// Componente que redirige a dashboard si ya estás logado
 function PublicOnlyRoute({ children }) {
   const { user, loading } = useAuth()
-
   if (loading) return <div>Cargando...</div>
   if (user) return <Navigate to="/dashboard" replace />
-
   return children
 }
 
 export default function App() {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main>
-    <Routes>
-      {/* Rutas públicas - solo accesibles sin estar logado */}
-      <Route path="/login" element={
-        <PublicOnlyRoute>
-          <LoginPage />
-        </PublicOnlyRoute>
-      } />
-      <Route path="/register" element={
-        <PublicOnlyRoute>
-          <RegisterPage />
-        </PublicOnlyRoute>
-      } />
-
-      {/* Ruta pública - accesible por cualquiera */}
-      <Route path="/lista/:token" element={<PublicListPage />} />
-
-      {/* Rutas privadas - solo accesibles estando logado */}
-      <Route path="/dashboard" element={
-        <PrivateRoute>
-          <DashboardPage />
-        </PrivateRoute>
-      } />
-      <Route path="/listas/:id" element={
-        <PrivateRoute>
-          <ListDetailPage />
-        </PrivateRoute>
-      } />
-      <Route path="/perfil" element={
-        <PrivateRoute>
-          <ProfilePage />
-        </PrivateRoute>
-      } />
-
-      <Route path="/listas/nueva" element={
-        <PrivateRoute>
-          <CreateListPage />
-        </PrivateRoute>
-      } />
-      <Route path="/listas/:id/editar" element={
-        <PrivateRoute>
-          <EditListPage />
-        </PrivateRoute>
-      } />
-      <Route path="/listas/:id/productos/nuevo" element={
-        <PrivateRoute>
-          <AddProductPage />
-        </PrivateRoute>
-      } />
-      <Route path="/listas/:id/productos/:productId/editar" element={
-        <PrivateRoute>
-          <EditProductPage />
-        </PrivateRoute>
-      } />
-
-      <Route path="/mis-reservas" element={
-        <PrivateRoute>
-          <MyReservationsPage />
-        </PrivateRoute>
-      } />
-
-      import AdminPage from './pages/admin/AdminPage'
-
-      <Route path="/admin" element={
-        <PrivateRoute>
-          <AdminPage />
-        </PrivateRoute>
-      } />
-
-      {/* Redireccion raíz */}
-      <Route path="/" element={<LandingPage />} />
-
-      {/* 404 */}
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+      <main className="flex-1">
+        <Routes>
+          <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
+          <Route path="/register" element={<PublicOnlyRoute><RegisterPage /></PublicOnlyRoute>} />
+          <Route path="/lista/:token" element={<PublicListPage />} />
+          <Route path="/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
+          <Route path="/listas/:id" element={<PrivateRoute><ListDetailPage /></PrivateRoute>} />
+          <Route path="/perfil" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+          <Route path="/listas/nueva" element={<PrivateRoute><CreateListPage /></PrivateRoute>} />
+          <Route path="/listas/:id/editar" element={<PrivateRoute><EditListPage /></PrivateRoute>} />
+          <Route path="/listas/:id/productos/nuevo" element={<PrivateRoute><AddProductPage /></PrivateRoute>} />
+          <Route path="/listas/:id/productos/:productId/editar" element={<PrivateRoute><EditProductPage /></PrivateRoute>} />
+          <Route path="/mis-reservas" element={<PrivateRoute><MyReservationsPage /></PrivateRoute>} />
+          <Route path="/admin" element={<PrivateRoute><AdminPage /></PrivateRoute>} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </main>
     </div>
   )

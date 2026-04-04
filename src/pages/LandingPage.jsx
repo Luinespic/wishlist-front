@@ -13,13 +13,13 @@ export default function LandingPage() {
           <span className="inline-block bg-primary-light text-primary text-sm font-medium px-4 py-1 rounded-full mb-6">
             Sin sorpresas duplicadas 🎁
           </span>
-          <h1 className="text-5xl font-bold text-text-primary leading-tight mb-6">
+          <h1 className="text-3xl md:text-5xl font-bold text-text-primary leading-tight mb-6">
             La forma más fácil de pedir lo que realmente quieres
           </h1>
           <p className="text-xl text-text-secondary mb-10 leading-relaxed">
             Crea tu lista de regalos, compártela con quien quieras y deja que tus seres queridos reserven sin spoilers. Sin duplicados, sin sorpresas arruinadas.
           </p>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4">
             {user ? (
               <Link
                 to="/dashboard"

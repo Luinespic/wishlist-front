@@ -83,9 +83,9 @@ export default function ProfilePage() {
 
       {/* Info básica */}
       <div className="flex items-center gap-4 mb-8 p-4 rounded-xl bg-primary-light border border-primary/20">
-        <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg">
-          {user?.name?.charAt(0).toUpperCase()}
-        </div>
+        <div className="w-12 h-12 rounded-full bg-primary flex-shrink-0 flex items-center justify-center text-white font-bold text-lg">
+  {user?.name?.charAt(0).toUpperCase()}
+</div>
         <div>
           <p className="font-bold text-text-primary">{user?.name}</p>
           <p className="text-sm text-text-secondary">{user?.email}</p>

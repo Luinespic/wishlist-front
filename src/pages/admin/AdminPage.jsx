@@ -137,7 +137,7 @@ export default function AdminPage() {
       )}
 
       {tab === 'stats' && stats && (
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card>
             <p className="text-text-secondary text-sm mb-1">Usuarios totales</p>
             <p className="text-4xl font-bold text-text-primary">{stats.totalUsers}</p>
@@ -165,48 +165,50 @@ export default function AdminPage() {
             <>
               {users.map(u => (
                 <Card key={u.id}>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-bold text-text-primary">{u.name}</p>
-                      <p className="text-sm text-text-secondary">{u.email}</p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg border border-border text-text-secondary">
-                          {u.role}
-                        </span>
-                        {u.is_banned && (
-                          <span className="text-xs font-medium px-2 py-1 rounded-full bg-red-50 border border-red-200 text-danger">
-                            Baneado
-                          </span>
-                        )}
-                        <span className="text-xs text-text-secondary">
-                          {u._count.lists} listas · {u._count.reservations} reservas
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {user?.role === 'superadmin' && (
-                        <select
-                          value={u.role}
-                          onChange={(e) => handleChangeRole(u.id, e.target.value)}
-                          className="text-sm px-2 py-1 rounded-lg border border-border bg-white text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
-                        >
-                          <option value="user">user</option>
-                          <option value="admin">admin</option>
-                          <option value="superadmin">superadmin</option>
-                        </select>
-                      )}
-                      <Button
-                        variant={u.is_banned ? 'secondary' : 'ghost'}
-                        onClick={() => handleBanUser(u.id, u.is_banned)}
-                      >
-                        {u.is_banned ? 'Desbanear' : 'Banear'}
-                      </Button>
-                      <Button variant="danger" onClick={() => handleDeleteUser(u.id)}>
-                        Eliminar
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
+  <div className="flex flex-col gap-4">
+    <div className="flex items-start justify-between gap-4">
+      <div className="flex-1 min-w-0">
+        <p className="font-bold text-text-primary truncate">{u.name}</p>
+        <p className="text-sm text-text-secondary truncate">{u.email}</p>
+        <div className="flex flex-wrap items-center gap-2 mt-2">
+          <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg border border-border text-text-secondary">
+            {u.role}
+          </span>
+          {u.is_banned && (
+            <span className="text-xs font-medium px-2 py-1 rounded-full bg-red-50 border border-red-200 text-danger">
+              Baneado
+            </span>
+          )}
+          <span className="text-xs text-text-secondary">
+            {u._count.lists} listas · {u._count.reservations} reservas
+          </span>
+        </div>
+      </div>
+      {user?.role === 'superadmin' && (
+        <select
+          value={u.role}
+          onChange={(e) => handleChangeRole(u.id, e.target.value)}
+          className="text-sm px-2 py-1 rounded-lg border border-border bg-white text-text-primary focus:outline-none focus:ring-2 focus:ring-primary flex-shrink-0"
+        >
+          <option value="user">user</option>
+          <option value="admin">admin</option>
+          <option value="superadmin">superadmin</option>
+        </select>
+      )}
+    </div>
+    <div className="flex items-center gap-2">
+      <Button
+        variant={u.is_banned ? 'secondary' : 'ghost'}
+        onClick={() => handleBanUser(u.id, u.is_banned)}
+      >
+        {u.is_banned ? 'Desbanear' : 'Banear'}
+      </Button>
+      <Button variant="danger" onClick={() => handleDeleteUser(u.id)}>
+        Eliminar
+      </Button>
+    </div>
+  </div>
+</Card>
               ))}
 
               <div className="flex items-center justify-between mt-4">
@@ -241,31 +243,33 @@ export default function AdminPage() {
             <>
               {lists.map(l => (
                 <Card key={l.id}>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-bold text-text-primary">{l.name}</p>
-                      <p className="text-sm text-text-secondary">
-                        {l.user.name} · {l.user.email}
-                      </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg border border-border text-text-secondary">
-                          {l.visibility}
-                        </span>
-                        <span className="text-xs text-text-secondary">
-                          {l._count.products} productos
-                        </span>
-                        {l.event_date && (
-                          <span className="text-xs text-text-secondary">
-                            {new Date(l.event_date).toLocaleDateString('es-ES')}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <Button variant="danger" onClick={() => handleDeleteList(l.id)}>
-                      Eliminar
-                    </Button>
-                  </div>
-                </Card>
+  <div className="flex flex-col gap-4">
+    <div className="flex-1 min-w-0">
+      <p className="font-bold text-text-primary truncate">{l.name}</p>
+      <p className="text-sm text-text-secondary truncate">
+        {l.user.name} · {l.user.email}
+      </p>
+      <div className="flex flex-wrap items-center gap-2 mt-2">
+        <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg border border-border text-text-secondary">
+          {l.visibility}
+        </span>
+        <span className="text-xs text-text-secondary">
+          {l._count.products} productos
+        </span>
+        {l.event_date && (
+          <span className="text-xs text-text-secondary">
+            {new Date(l.event_date).toLocaleDateString('es-ES')}
+          </span>
+        )}
+      </div>
+    </div>
+    <div>
+      <Button variant="danger" onClick={() => handleDeleteList(l.id)}>
+        Eliminar
+      </Button>
+    </div>
+  </div>
+</Card>
               ))}
 
               <div className="flex items-center justify-between mt-4">

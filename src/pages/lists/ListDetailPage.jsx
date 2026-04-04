@@ -82,51 +82,46 @@ export default function ListDetailPage() {
     <div className="max-w-5xl mx-auto px-8 py-12">
 
       <div className="mb-8">
-        <Link to="/dashboard" className="text-sm text-text-secondary hover:text-text-primary transition-colors duration-200">
-          Volver al dashboard
-        </Link>
-        <div className="flex items-start justify-between mt-4">
-          <div>
-            <h1 className="text-3xl font-bold text-text-primary">{list.name}</h1>
-            {list.description && (
-              <p className="text-text-secondary mt-2">{list.description}</p>
-            )}
-            <div className="flex items-center gap-3 mt-3">
-              <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg text-text-secondary border border-border">
-                {list.visibility === 'public' ? 'Publica' : 'Privada'}
-              </span>
-              {list.surprise_mode && (
-                <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg text-text-secondary border border-border">
-                  Modo sorpresa
-                </span>
-              )}
-              {formattedDate && (
-                <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg text-text-secondary border border-border">
-                  {formattedDate}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleCopyLink}
-              className="px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary-light transition-colors duration-200"
-            >
-              Compartir lista
-            </button>
-            <Link
-              to={`/listas/${id}/editar`}
-              className="px-4 py-2 text-sm font-medium text-text-secondary border border-border rounded-lg hover:bg-bg transition-colors duration-200"
-            >
-              Editar
-            </Link>
-            <Button variant="danger" onClick={handleDeleteList}>
-              Eliminar
-            </Button>
-          </div>
-        </div>
-      </div>
+  <Link to="/dashboard" className="text-sm text-text-secondary hover:text-text-primary transition-colors duration-200">
+    Volver al dashboard
+  </Link>
+  <h1 className="text-2xl md:text-3xl font-bold text-text-primary mt-4">{list.name}</h1>
+  {list.description && (
+    <p className="text-text-secondary mt-2">{list.description}</p>
+  )}
+  <div className="flex flex-wrap items-center gap-2 mt-3">
+    <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg text-text-secondary border border-border">
+      {list.visibility === 'public' ? 'Publica' : 'Privada'}
+    </span>
+    {list.surprise_mode && (
+      <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg text-text-secondary border border-border">
+        Modo sorpresa
+      </span>
+    )}
+    {formattedDate && (
+      <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg text-text-secondary border border-border">
+        {formattedDate}
+      </span>
+    )}
+  </div>
+  <div className="flex flex-wrap items-center gap-2 mt-4">
+    <button
+      onClick={handleCopyLink}
+      className="px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary-light transition-colors duration-200"
+    >
+      Compartir lista
+    </button>
+    <Link
+      to={`/listas/${id}/editar`}
+      className="px-4 py-2 text-sm font-medium text-text-secondary border border-border rounded-lg hover:bg-bg transition-colors duration-200"
+    >
+      Editar
+    </Link>
+    <Button variant="danger" onClick={handleDeleteList}>
+      Eliminar
+    </Button>
+  </div>
+</div>
 
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-text-primary">

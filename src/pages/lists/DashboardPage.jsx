@@ -53,25 +53,25 @@ export default function DashboardPage() {
     <div className="max-w-5xl mx-auto px-8 py-12">
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-10">
-        <div>
-          <h1 className="text-3xl font-bold text-text-primary">
-            Hola, {user.name} 👋
-          </h1>
-          <p className="text-text-secondary mt-1">
-            {lists.length === 0
-              ? 'Todavía no tienes ninguna lista'
-              : `Tienes ${lists.length} ${lists.length === 1 ? 'lista' : 'listas'}`
-            }
-          </p>
-        </div>
-        <Link
-          to="/listas/nueva"
-          className="px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-hover transition-colors duration-200"
-        >
-          + Nueva lista
-        </Link>
-      </div>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
+  <div>
+    <h1 className="text-2xl md:text-3xl font-bold text-text-primary">
+      Hola, {user.name} 👋
+    </h1>
+    <p className="text-text-secondary mt-1">
+      {lists.length === 0
+        ? 'Todavia no tienes ninguna lista'
+        : `Tienes ${lists.length} ${lists.length === 1 ? 'lista' : 'listas'}`
+      }
+    </p>
+  </div>
+  <Link
+    to="/listas/nueva"
+    className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-hover transition-colors duration-200 whitespace-nowrap"
+  >
+    + Nueva lista
+  </Link>
+</div>
 
       {/* Lista vacía */}
       {lists.length === 0 ? (
@@ -110,24 +110,24 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-xs font-medium px-2 py-1 rounded-full bg-primary-light text-primary">
-                  {list._count.products} {list._count.products === 1 ? 'producto' : 'productos'}
-                </span>
-                {list.reservedCount > 0 && (
-                <span className="text-xs font-medium px-2 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">
-                  {list.reservedCount} reservado{list.reservedCount > 1 ? 's' : ''}
-                </span>
-                )}
-                <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg text-text-secondary border border-border">
-                  {list.visibility === 'public' ? '🌍 Pública' : '🔒 Privada'}
-                </span>
-                {list.surprise_mode && (
-                  <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg text-text-secondary border border-border">
-                    🎭 Sorpresa
-                  </span>
-                )}
-              </div>
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+  <span className="text-xs font-medium px-2 py-1 rounded-full bg-primary-light text-primary">
+    {list._count.products} {list._count.products === 1 ? 'producto' : 'productos'}
+  </span>
+  {list.reservedCount > 0 && (
+    <span className="text-xs font-medium px-2 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">
+      {list.reservedCount} reservado{list.reservedCount > 1 ? 's' : ''}
+    </span>
+  )}
+  <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg text-text-secondary border border-border">
+    {list.visibility === 'public' ? 'Publica' : 'Privada'}
+  </span>
+  {list.surprise_mode && (
+    <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg text-text-secondary border border-border">
+      Modo sorpresa
+    </span>
+  )}
+</div>
 
               {list.event_date && (
                 <p className="text-xs text-text-secondary mb-4">
