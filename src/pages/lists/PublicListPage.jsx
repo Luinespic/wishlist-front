@@ -13,15 +13,19 @@ export default function PublicListPage() {
 
   const [list, setList] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [errorType, setErrorType] = useState(null)
 
   useEffect(() => {
     const fetchList = async () => {
       try {
         const res = await getListByToken(token)
         setList(res.data.list)
-      } catch {
-        setError('Lista no encontrada')
+      } catch (err) {
+        if (err.response?.status === 403) {
+          setErrorType('private')
+        } else {
+          setErrorType('notfound')
+        }
       } finally {
         setLoading(false)
       }
@@ -72,7 +76,16 @@ export default function PublicListPage() {
     </div>
   )
 
-  if (error) return (
+  if (errorType === 'private') return (
+    <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+      <div className="text-5xl">🔒</div>
+      <h1 className="text-2xl font-bold text-text-primary">Lista privada</h1>
+      <p className="text-text-secondary">El propietario de esta lista la ha configurado como privada.</p>
+      <Link to="/" className="text-primary font-medium hover:underline">Volver al inicio</Link>
+    </div>
+  )
+
+  if (errorType === 'notfound') return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-4">
       <div className="text-5xl">🎁</div>
       <h1 className="text-2xl font-bold text-text-primary">Lista no encontrada</h1>
