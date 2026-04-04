@@ -179,8 +179,11 @@ export default function ListDetailPage() {
                   )}
 
                   {product.status === 'reserved' && list.surprise_mode && (
-                    <p className="text-sm text-text-secondary mt-2">Reservado (modo sorpresa activo)</p>
-                  )}
+  <p className="text-sm text-text-secondary mt-2">
+    Reservado por:{' '}
+    <span className="font-bold text-primary">¡Sorpresa!</span>
+  </p>
+)}
 
                   <div className="flex items-center gap-3 mt-3">
                     {product.links?.map(link => (
