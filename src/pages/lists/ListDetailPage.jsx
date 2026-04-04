@@ -8,6 +8,9 @@ import Button from '../../components/Button'
 export default function ListDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const formatPrice = (price) => {
+  return Number(price).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
 
   const [list, setList] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -195,7 +198,7 @@ export default function ListDetailPage() {
                       >
                         <img src={link.favicon_url} alt={link.shop_name} className="w-4 h-4" />
                         {link.shop_name}
-                        <span className="font-medium">{link.price}€</span>
+                        <span className="font-medium">{formatPrice(link.price)}€</span>
                       </a>
                     ))}
                   </div>
