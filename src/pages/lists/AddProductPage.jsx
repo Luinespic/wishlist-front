@@ -13,7 +13,6 @@ export default function AddProductPage() {
   const [description, setDescription] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [links, setLinks] = useState([
-    { url: '', shop_name: '', price: '' },
     { url: '', shop_name: '', price: '' }
   ])
   const [error, setError] = useState(null)
@@ -32,7 +31,7 @@ export default function AddProductPage() {
   }
 
   const removeLink = (index) => {
-    if (links.length > 2) {
+    if (links.length > 1) {
       setLinks(links.filter((_, i) => i !== index))
     }
   }
@@ -117,7 +116,7 @@ export default function AddProductPage() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <label className="text-sm font-medium text-text-primary">
-                Enlaces de compra <span className="text-text-secondary font-normal">(mínimo 2, máximo 4)</span>
+                Enlaces de compra <span className="text-text-secondary font-normal">(mínimo 1, máximo 4)</span>
               </label>
               {links.length < 4 && (
                 <button
