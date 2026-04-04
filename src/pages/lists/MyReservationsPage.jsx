@@ -34,6 +34,10 @@ export default function MyReservationsPage() {
     }
   }
 
+  const formatPrice = (price) => {
+    return Number(price).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  }
+
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
       <p className="text-text-secondary">Cargando...</p>
@@ -79,15 +83,31 @@ export default function MyReservationsPage() {
                 )}
                 <div className="flex-1">
                   <h3 className="text-lg font-bold text-text-primary">{reservation.product.name}</h3>
-                  <p className="text-sm text-text-secondary mt-1">
-                    Lista:{' '}
-                    <Link
-                      to={`/lista/${reservation.product.list.share_token}`}
-                      className="text-primary hover:underline font-medium"
-                    >
-                      {reservation.product.list.name}
-                    </Link>
-                  </p>
+
+                  <div className="flex items-center gap-4 mt-1">
+                    <p className="text-sm text-text-secondary">
+                      Lista de{' '}
+                      <Link
+                        to={`/lista/${reservation.product.list.share_token}`}
+                        className="text-primary hover:underline font-medium"
+                      >
+                        {reservation.product.list.user?.name}
+                      </Link>
+                      {': '}
+                      <Link
+                        to={`/lista/${reservation.product.list.share_token}`}
+                        className="text-primary hover:underline font-medium"
+                      >
+                        {reservation.product.list.name}
+                      </Link>
+                    </p>
+
+                    {reservation.product.list.event_date && (
+                      <span className="text-xs font-medium px-2 py-1 rounded-full bg-primary text-white flex-shrink-0">
+                        Fecha limite: {new Date(reservation.product.list.event_date).toLocaleDateString('es-ES')}
+                      </span>
+                    )}
+                  </div>
 
                   <div className="flex items-center gap-3 mt-3 flex-wrap">
                     {reservation.product.links.map(link => (
@@ -100,7 +120,7 @@ export default function MyReservationsPage() {
                       >
                         <img src={link.favicon_url} alt={link.shop_name} className="w-4 h-4" />
                         {link.shop_name}
-                        <span className="font-medium">{link.price}€</span>
+                        <span className="font-medium">{formatPrice(link.price)}€</span>
                       </a>
                     ))}
                   </div>

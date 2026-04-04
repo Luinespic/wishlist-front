@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { getListByToken } from '../../api/lists'
 import { reserveProduct, cancelReservation } from '../../api/reservations'
@@ -9,6 +9,7 @@ import Button from '../../components/Button'
 export default function PublicListPage() {
   const { token } = useParams()
   const { user } = useAuth()
+  const navigate = useNavigate()
 
   const [list, setList] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -30,6 +31,10 @@ export default function PublicListPage() {
   }, [token])
 
   const handleReserve = async (productId) => {
+    if (!user) {
+      navigate('/login', { state: { message: 'Debes iniciar sesion para reservar productos.' } })
+      return
+    }
     try {
       await reserveProduct(productId)
       const res = await getListByToken(token)
@@ -48,6 +53,15 @@ export default function PublicListPage() {
     } catch (err) {
       alert(err.response?.data?.error || 'Error al cancelar la reserva')
     }
+  }
+
+  const handleSearchGoogle = (productName) => {
+    const query = encodeURIComponent(productName)
+    window.open(`https://www.google.com/search?q=${query}`, '_blank')
+  }
+
+  const formatPrice = (price) => {
+    return Number(price).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
   }
 
   const isOwner = user && list && user.id === list.user_id
@@ -78,23 +92,18 @@ export default function PublicListPage() {
 
       <div className="mb-10">
         <div className="flex items-start justify-between">
-          <div>
+          <div className="flex-1">
             <h1 className="text-3xl font-bold text-text-primary">{list.name}</h1>
             {list.description && (
               <p className="text-text-secondary mt-2">{list.description}</p>
             )}
-            <div className="flex items-center gap-3 mt-3">
-              {formattedDate && (
-                <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg text-text-secondary border border-border">
-                  {formattedDate}
-                </span>
-              )}
-              {list.surprise_mode && (
-                <span className="text-xs font-medium px-2 py-1 rounded-full bg-bg text-text-secondary border border-border">
-                  Modo sorpresa
-                </span>
-              )}
-            </div>
+
+            {formattedDate && (
+              <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium">
+                <span>Fecha limite:</span>
+                <span>{formattedDate}</span>
+              </div>
+            )}
           </div>
 
           {!user && (
@@ -160,13 +169,20 @@ export default function PublicListPage() {
                       >
                         <img src={link.favicon_url} alt={link.shop_name} className="w-4 h-4" />
                         {link.shop_name}
-                        <span className="font-medium">{link.price}€</span>
+                        <span className="font-medium">{formatPrice(link.price)}€</span>
                       </a>
                     ))}
+                    <button
+                      onClick={() => handleSearchGoogle(product.name)}
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border hover:border-primary hover:text-primary text-sm text-text-secondary transition-colors duration-200"
+                    >
+                      <img src="https://www.google.com/favicon.ico" alt="Google" className="w-4 h-4" />
+                      Mas tiendas
+                    </button>
                   </div>
 
                   <div className="mt-4">
-                    {user && !isOwner && product.status === 'available' && (
+                    {product.status === 'available' && !isOwner && (
                       <Button onClick={() => handleReserve(product.id)}>
                         Reservar regalo
                       </Button>
@@ -182,6 +198,13 @@ export default function PublicListPage() {
                     {isOwner && product.status === 'reserved' && !list.surprise_mode && (
                       <p className="text-sm text-text-secondary">
                         Reservado por: <span className="font-medium text-text-primary">{product.reservation?.user_id}</span>
+                      </p>
+                    )}
+
+                    {isOwner && product.status === 'reserved' && list.surprise_mode && (
+                      <p className="text-sm text-text-secondary">
+                        Reservado por:{' '}
+                        <span className="font-bold text-primary text-base">Sorpresa!</span>
                       </p>
                     )}
                   </div>
