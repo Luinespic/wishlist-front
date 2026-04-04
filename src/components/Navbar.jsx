@@ -31,6 +31,14 @@ export default function Navbar() {
             >
               Mis reservas
             </Link>
+            {(user.role === 'admin' || user.role === 'superadmin') && (
+              <Link
+                to="/admin"
+                className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
+              > 
+                Admin
+            </Link>
+            )}
             <Link
               to="/perfil"
               className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"

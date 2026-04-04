@@ -103,6 +103,14 @@ export default function App() {
         </PrivateRoute>
       } />
 
+      import AdminPage from './pages/admin/AdminPage'
+
+      <Route path="/admin" element={
+        <PrivateRoute>
+          <AdminPage />
+        </PrivateRoute>
+      } />
+
       {/* Redireccion raíz */}
       <Route path="/" element={<LandingPage />} />
 
