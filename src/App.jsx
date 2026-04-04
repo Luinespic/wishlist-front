@@ -15,6 +15,7 @@ import EditProductPage from './pages/lists/EditProductPage'
 import MyReservationsPage from './pages/lists/MyReservationsPage'
 import LandingPage from './pages/LandingPage'
 import Navbar from './components/Navbar'
+import AdminPage from './pages/admin/AdminPage'
 
 
 
