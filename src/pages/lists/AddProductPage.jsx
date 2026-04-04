@@ -133,7 +133,7 @@ export default function AddProductPage() {
               <div key={index} className="p-4 rounded-lg border border-border bg-bg flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-text-secondary">Tienda {index + 1}</span>
-                  {links.length > 2 && (
+                  {links.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeLink(index)}
