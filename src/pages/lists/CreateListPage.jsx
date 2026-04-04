@@ -104,7 +104,7 @@ export default function CreateListPage() {
               onClick={() => setSurpriseMode(!surpriseMode)}
               className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${surpriseMode ? 'bg-primary' : 'bg-border'}`}
             >
-              <span className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${surpriseMode ? 'translate-x-7' : 'translate-x-1'}`} />
+              <span className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${surpriseMode ? 'translate-x-6' : 'translate-x-0'}`} />
             </button>
           </div>
 
