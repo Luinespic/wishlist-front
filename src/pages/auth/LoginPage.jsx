@@ -4,6 +4,8 @@ import { useAuth } from '../../hooks/useAuth'
 import Card from '../../components/Card'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
+import { useLocation } from 'react-router-dom'
+
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -13,11 +15,14 @@ export default function LoginPage() {
 
   const { login } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+  const message = location.state?.message
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(null)
     setLoading(true)
+  
 
     try {
       await login(email, password)
@@ -43,7 +48,11 @@ export default function LoginPage() {
               {error}
             </div>
           )}
-
+          {message && (
+  <div className="mb-4 p-3 rounded-lg bg-primary-light border border-border text-primary text-sm">
+    {message}
+  </div>
+)}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <Input
               label="Email"
