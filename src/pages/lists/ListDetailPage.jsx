@@ -110,7 +110,7 @@ export default function ListDetailPage() {
               onClick={handleCopyLink}
               className="px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary-light transition-colors duration-200"
             >
-              Copiar enlace
+              Compartir lista
             </button>
             <Link
               to={`/listas/${id}/editar`}
