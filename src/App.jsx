@@ -16,6 +16,8 @@ import MyReservationsPage from './pages/lists/MyReservationsPage'
 import LandingPage from './pages/LandingPage'
 import Navbar from './components/Navbar'
 import AdminPage from './pages/admin/AdminPage'
+import GoogleCallbackPage from './pages/auth/GoogleCallbackPage'
+
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
@@ -49,6 +51,7 @@ export default function App() {
           <Route path="/listas/:id/productos/:productId/editar" element={<PrivateRoute><EditProductPage /></PrivateRoute>} />
           <Route path="/mis-reservas" element={<PrivateRoute><MyReservationsPage /></PrivateRoute>} />
           <Route path="/admin" element={<PrivateRoute><AdminPage /></PrivateRoute>} />
+          <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
           <Route path="/" element={<LandingPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

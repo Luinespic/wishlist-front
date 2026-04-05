@@ -21,12 +21,12 @@ export default function RegisterPage() {
     setError(null)
 
     if (password !== confirmPassword) {
-      setError('Las contraseñas no coinciden')
+      setError('Las contrasenas no coinciden')
       return
     }
 
     if (password.length < 8) {
-      setError('La contraseña debe tener al menos 8 caracteres')
+      setError('La contrasena debe tener al menos 8 caracteres')
       return
     }
 
@@ -46,7 +46,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-text-primary">Crear cuenta 🎁</h1>
+          <h1 className="text-3xl font-bold text-text-primary">Crear cuenta</h1>
           <p className="text-text-secondary mt-2">Empieza a crear tus listas de regalos</p>
         </div>
 
@@ -75,31 +75,48 @@ export default function RegisterPage() {
               required
             />
             <Input
-              label="Contraseña"
+              label="Contrasena"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="..."
               required
             />
             <Input
-              label="Confirmar contraseña"
+              label="Confirmar contrasena"
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="..."
               required
             />
             <Button type="submit" disabled={loading} fullWidth>
               {loading ? 'Creando cuenta...' : 'Crear cuenta'}
             </Button>
           </form>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-border" />
+            </div>
+            <div className="relative flex justify-center text-xs text-text-secondary bg-white px-2">
+              o continua con
+            </div>
+          </div>
+
+          <a
+            href="http://localhost:3000/api/auth/google"
+            className="flex items-center justify-center gap-3 w-full px-4 py-2 border border-border rounded-lg text-sm font-medium text-text-primary hover:bg-bg transition-colors duration-200"
+          >
+            <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
+            Continuar con Google
+          </a>
         </Card>
 
         <p className="text-center text-sm text-text-secondary mt-6">
-          ¿Ya tienes cuenta?{' '}
+          Ya tienes cuenta?{' '}
           <Link to="/login" className="text-primary font-medium hover:underline">
-            Inicia sesión
+            Inicia sesion
           </Link>
         </p>
       </div>
