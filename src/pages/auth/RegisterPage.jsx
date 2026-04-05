@@ -105,7 +105,7 @@ export default function RegisterPage() {
           </div>
 
           <a
-            href="href={`${import.meta.env.VITE_BACKEND_URL}/api/auth/google`}"
+            href={`${import.meta.env.VITE_BACKEND_URL}/api/auth/google`}
             className="flex items-center justify-center gap-3 w-full px-4 py-2 border border-border rounded-lg text-sm font-medium text-text-primary hover:bg-bg transition-colors duration-200"
           >
             <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
