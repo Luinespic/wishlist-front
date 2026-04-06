@@ -16,8 +16,8 @@ export default function Navbar() {
   return (
     <nav className="bg-white border-b border-border px-6 py-4">
       <div className="flex items-center justify-between">
-        <Link to="/" className="text-xl font-bold text-primary">
-          WishList 🎁
+        <Link to="/">
+          <img src="/logo_desktop.png" alt="WishList App" className="h-10 w-auto" />
         </Link>
 
         {/* Menu desktop */}
